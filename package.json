@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "newman run 'test/Json placeholder.postman_collection.json' -e '' -r cli,htmlextra --reporter-htmlextra-title 'Json placeholder API'"
+    "test": "newman run 'test/Json placeholder.postman_collection.json' -e '' -r cli,htmlextra --reporter-htmlextra-title 'Json placeholder API'",
+    "test-pipeline": "newman run 'test/Json placeholder.postman_collection.json' -e '' -r cli,htmlextra,junit --reporter-htmlextra-export newman/html-report.html --reporter-junit-export newman/junit-report.xml --reporter-htmlextra-title 'Json placeholder API'"
   },
   "keywords": [],
   "author": "",
