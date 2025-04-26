@@ -6,6 +6,8 @@ Exportação realizada do postman, foi incluído validações de status code e a
 
 ## Instalar
 
+Necessário o node
+
 ```bash
 npm i
 ```
