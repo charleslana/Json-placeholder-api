@@ -1,10 +1,11 @@
 pipeline {
     agent any
-
+    triggers {
+        cron('H/2 * * * *') // Executa a cada 2 minutos
+    }
     tools {
         nodejs 'Node 22.15.0'
     }
-
     stages {
         stage('Checkout') {
             steps {
