@@ -20,5 +20,5 @@ npm run test
 
 O relatório é gerado na pasta newman da pasta root do projeto
 
-![Screenshot-1](screenshot-1.png)
-![Screenshot-2](screenshot-2.png)
+![Screenshot-1](screenshots/screenshot-1.png)
+![Screenshot-2](screenshots/screenshot-2.png)
