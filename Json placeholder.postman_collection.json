@@ -1,0 +1,735 @@
+{
+	"info": {
+		"_postman_id": "12816f9c-a313-4112-a80a-9e00eea94228",
+		"name": "Json placeholder",
+		"description": "[https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13052491"
+	},
+	"item": [
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('array');",
+									"    pm.expect(response.length).to.be.greaterThan(0);",
+									"    response.forEach(item => {",
+									"        pm.expect(item).to.be.an('object');",
+									"        pm.expect(item).to.have.property('userId');",
+									"        pm.expect(item).to.have.property('id');",
+									"        pm.expect(item).to.have.property('title');",
+									"        pm.expect(item).to.have.property('body');",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('object');",
+									"    pm.expect(response).to.have.property('userId');",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response).to.have.property('title');",
+									"    pm.expect(response).to.have.property('body');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/posts/:postId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    const expectedUserId = parseInt(pm.environment.get(\"userId\"));",
+									"    const expectedTitle = pm.environment.get(\"randomTitle\");",
+									"    const expectedBody = pm.environment.get(\"randomBody\");",
+									"",
+									"    pm.expect(response.userId).to.eql(expectedUserId);",
+									"    pm.expect(response.title).to.eql(expectedTitle);",
+									"    pm.expect(response.body).to.eql(expectedBody)",
+									"    pm.expect(response.id).to.not.be.null;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const randomTitle = pm.variables.replaceIn('{{$randomWord}}');",
+									"const randomBody = pm.variables.replaceIn('{{$randomWords}}');",
+									"const userId = 1;",
+									"",
+									"pm.environment.set(\"userId\", userId);",
+									"pm.environment.set(\"randomTitle\", randomTitle);",
+									"pm.environment.set(\"randomBody\", randomBody);",
+									"",
+									"pm.environment.set(\"data\", JSON.stringify({",
+									"    \"userId\": userId,",
+									"    \"title\": randomTitle,",
+									"    \"body\": randomBody",
+									"}));",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{data}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    const expectedUserId = parseInt(pm.environment.get(\"userId\"));",
+									"    const expectedTitle = pm.environment.get(\"randomTitle\");",
+									"    const expectedBody = pm.environment.get(\"randomBody\");",
+									"",
+									"    pm.expect(response.userId).to.eql(expectedUserId);",
+									"    pm.expect(response.title).to.eql(expectedTitle);",
+									"    pm.expect(response.body).to.eql(expectedBody)",
+									"    pm.expect(response.id).to.not.be.null;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const randomTitle = pm.variables.replaceIn('{{$randomWord}}');",
+									"const randomBody = pm.variables.replaceIn('{{$randomWords}}');",
+									"const userId = 1;",
+									"",
+									"pm.environment.set(\"userId\", userId);",
+									"pm.environment.set(\"randomTitle\", randomTitle);",
+									"pm.environment.set(\"randomBody\", randomBody);",
+									"",
+									"pm.environment.set(\"data\", JSON.stringify({",
+									"    \"userId\": userId,",
+									"    \"title\": randomTitle,",
+									"    \"body\": randomBody,",
+									"}));",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{data}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts/:postId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    const expectedTitle = pm.environment.get(\"randomTitle\");",
+									"",
+									"    pm.expect(response.title).to.eql(expectedTitle);",
+									"    pm.expect(response).to.have.property('userId');",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response).to.have.property('body');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const randomTitle = pm.variables.replaceIn('{{$randomWord}}');",
+									"",
+									"pm.environment.set(\"randomTitle\", randomTitle);",
+									"",
+									"pm.environment.set(\"data\", JSON.stringify({",
+									"    \"title\": randomTitle",
+									"}));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{data}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts/:postId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('object');",
+									"    pm.expect(Object.keys(response).length).to.eql(0);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/posts/:postId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter userId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('array');",
+									"    pm.expect(response.length).to.be.greaterThan(0);",
+									"    response.forEach(item => {",
+									"        pm.expect(item).to.be.an('object');",
+									"        pm.expect(item).to.have.property('userId');",
+									"        pm.expect(item).to.have.property('id');",
+									"        pm.expect(item).to.have.property('title');",
+									"        pm.expect(item).to.have.property('body');",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/posts?userId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post comments",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('array');",
+									"    pm.expect(response.length).to.be.greaterThan(0);",
+									"    response.forEach(item => {",
+									"        pm.expect(item).to.be.an('object');",
+									"        pm.expect(item).to.have.property('postId');",
+									"        pm.expect(item).to.have.property('id');",
+									"        pm.expect(item).to.have.property('name');",
+									"        pm.expect(item).to.have.property('email');",
+									"        pm.expect(item).to.have.property('body');",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/posts/:postId/comments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								":postId",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('array');",
+									"    pm.expect(response.length).to.be.greaterThan(0);",
+									"    response.forEach(item => {",
+									"        pm.expect(item).to.be.an('object');",
+									"        pm.expect(item).to.have.property('postId');",
+									"        pm.expect(item).to.have.property('id');",
+									"        pm.expect(item).to.have.property('name');",
+									"        pm.expect(item).to.have.property('email');",
+									"        pm.expect(item).to.have.property('body');",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/comments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('object');",
+									"    pm.expect(response).to.have.property('postId');",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response).to.have.property('name');",
+									"    pm.expect(response).to.have.property('email');",
+									"    pm.expect(response).to.have.property('body');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/comments/:commentId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "commentId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida se o status code é 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Valida campos específicos da resposta\", function () {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('array');",
+									"    pm.expect(response.length).to.be.greaterThan(0);",
+									"    response.forEach(item => {",
+									"        pm.expect(item).to.be.an('object');",
+									"        pm.expect(item).to.have.property('id');",
+									"        pm.expect(item).to.have.property('name');",
+									"        pm.expect(item).to.have.property('username');",
+									"        pm.expect(item).to.have.property('email');",
+									"        pm.expect(item).to.have.property('address');",
+									"        pm.expect(item).to.have.property('phone');",
+									"        pm.expect(item).to.have.property('website');",
+									"        pm.expect(item).to.have.property('company');",
+									"",
+									"        const address = item.address;",
+									"        pm.expect(address).to.have.property('street');",
+									"        pm.expect(address).to.have.property('suite');",
+									"        pm.expect(address).to.have.property('city');",
+									"        pm.expect(address).to.have.property('zipcode');",
+									"        pm.expect(address).to.have.property('geo');",
+									"",
+									"        const geo = address.geo;",
+									"        pm.expect(geo).to.have.property('lat');",
+									"        pm.expect(geo).to.have.property('lng');",
+									"        pm.expect(geo.lat).to.be.a('string');",
+									"        pm.expect(geo.lng).to.be.a('string');",
+									"",
+									"        const company = item.company;",
+									"        pm.expect(company).to.have.property('name');",
+									"        pm.expect(company).to.have.property('catchPhrase');",
+									"        pm.expect(company).to.have.property('bs');",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://jsonplaceholder.typicode.com",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "json-placeholder-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "newman run 'Json placeholder.postman_collection.json' -e '' -r cli,htmlextra --reporter-htmlextra-title 'Json placeholder API'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "newman": "^6.2.1",
+    "newman-reporter-htmlextra": "^1.23.1"
+  }
+}
